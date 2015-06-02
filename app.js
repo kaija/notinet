@@ -6,7 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var debug = require('winston');
+
+// Create default express route
 var routes = require('./routes/index');
+
+// Connect/setup databse and set to router
+var db = require('./database');
+
+// Prepare API
 var users = require('./routes/users');
 var groups = require('./routes/groups');
 var notify = require('./routes/notify');
