@@ -2,28 +2,28 @@ var express = require('express');
 var router = express.Router();
 
 /**
- * Create user
+ * Create user group
  */
 router.post('/create/:id', function(req, res, next) {
   res.send('Create ' + req.params.id);
 });
 
 /**
- * Get user data
+ * Get user group info
  */
-router.get('/profile/:id', function(req, res, next) {
+router.get('/info/:id', function(req, res, next) {
   res.send('Get ' + req.params.id);
 });
 
 /**
- * update user data
+ * Update group info
  */
-router.put('/profile/:id', function(req, res, next) {
+router.put('/info/:id', function(req, res, next) {
   res.send('Update ' + req.params.id);
 });
 
 /**
- * Delete user
+ * Delete user group
  */
 router.delete('/delete/:id', function(req, res, next) {
   res.send('Delete ' + req.params.id);
