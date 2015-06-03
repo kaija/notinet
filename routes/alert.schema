@@ -1,0 +1,6 @@
+{
+  "id": "",
+  "alertName": "cpu high alert",
+  "userList": ['kaija.chang@gmail.com'], //User id(email)
+  "groupList" ['test group'], //Group name
+}

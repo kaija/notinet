@@ -16,6 +16,7 @@ var db = require('./database');
 // Prepare API
 var users = require('./routes/users');
 var groups = require('./routes/groups');
+var project = require('./routes/project');
 var notify = require('./routes/notify');
 
 var app = express();
@@ -39,6 +40,7 @@ debug.debug('Load routing.');
 app.use('/', routes);
 app.use('/users', users);
 app.use('/groups', groups);
+app.use('/project', project);
 app.use('/notify', notify);
 
 // catch 404 and forward to error handler

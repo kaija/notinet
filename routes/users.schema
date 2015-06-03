@@ -1,0 +1,9 @@
+{
+  "fullName": "kaija chang",
+  "email": "kaija.chang@gmail.com",
+  "contact": [
+    {"email": "kaija.chang@gmail.com"},
+    {"apple": {"udid":"123456789"}},
+    {"baidu": {"userId":"123456", "channelId":"567890"}}
+  ]
+}

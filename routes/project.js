@@ -2,15 +2,13 @@ var express = require('express');
 var router = express.Router();
 var r = require('rethinkdb');
 var db = require('../db/rethinkdb');
-var user = db.user();
+var project = db.project();
 /**
  * Create user
  */
 router.post('/create', function(req, res, next) {
-  var u = {"name":"kevin", "email":"kaija.chang.co@gmail.com"};
-  user.create(u, function(e, r){
-    res.send('Created');
-  });
+  project.create();
+  res.send('Created');
 });
 
 /**
