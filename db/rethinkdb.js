@@ -39,8 +39,17 @@ var user = function(){
   update = function(){
     console.log('yo updated');
   };
-  get = function(){
-    console.log('yo get');
+  get = function(id, cb){
+    r.table(config.db.userTable).filter({'email':id}).run(dbConnection()).then(function(cursor) {
+      return cursor.toArray();
+    }).then(function(result) {
+      console.log(result);
+      if(result.length > 0) {
+        cb(null, result[0]);
+      }else{
+        cb('user not exist', null);
+      }
+    });
   };
   fwk.method(that, 'create', create, _super);
   fwk.method(that, 'update', update, _super);
