@@ -1,10 +1,13 @@
 var express = require('express');
-var router = express.Router();
-var config = require('../config');
+var session = require('express-session');
 var passport = require('passport');
+var session = require('express-session');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var DigestStrategy = require('passport-http').DigestStrategy;
+
+var router = express.Router();
+var config = require('../config');
 
 var users = [
     { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
@@ -67,8 +70,13 @@ function findUser(key){
 /*!
  * Register passport to router
  */
+
+router.use(session({
+  secret: config.site.sessionSecret
+}));
 router.use(passport.initialize());
 router.use(passport.session());
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -165,6 +173,10 @@ router.post('/login', passport.authenticate('digest', { session: true }),
     res.send("OK");
   }
 );
+
+router.get('/test', ensureAuthenticated, function(req, res, next) {
+  res.send(req.user);
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
