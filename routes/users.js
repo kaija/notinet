@@ -35,7 +35,8 @@ function md5(str, encoding){
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login.html');
+  res.status(401);
+  res.send("Unauthorized");
 }
 
 router.get('/demo', ensureAuthenticated, function(req, res, next){

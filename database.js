@@ -33,6 +33,42 @@ async.waterfall([
       callback(err, connection);
     });
   },
+  //Create user group table
+  function createTable(connection, callback) {
+    r.tableList().contains('groups').do(function(containsTable) {
+      return r.branch(
+        containsTable,
+        {created: 0},
+        r.tableCreate('groups', {primary_key: 'name'})
+      );
+    }).run(connection, function(err) {
+      callback(err, connection);
+    });
+  },
+  //Create project table
+  function createTable(connection, callback) {
+    r.tableList().contains('projects').do(function(containsTable) {
+      return r.branch(
+        containsTable,
+        {created: 0},
+        r.tableCreate('projects', {primary_key: 'name'})
+      );
+    }).run(connection, function(err) {
+      callback(err, connection);
+    });
+  },
+  //Create alert table
+  function createTable(connection, callback) {
+    r.tableList().contains('alerts').do(function(containsTable) {
+      return r.branch(
+        containsTable,
+        {created: 0},
+        r.tableCreate('alerts')
+      );
+    }).run(connection, function(err) {
+      callback(err, connection);
+    });
+  },
   //TODO Create Index if require
 ], function(err, connection) {
   if(connection){

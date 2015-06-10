@@ -88,7 +88,8 @@ passport.deserializeUser(function(obj, done) {
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login.html');
+  res.status(401);
+  res.send("Unauthorized");
 }
 
 /*!
@@ -103,7 +104,6 @@ passport.use(new DigestStrategy({ qop: 'auth' , realm: config.site.realm},
       if(err) return done(err);
       var password = {};
       password['ha1'] = res.password;
-      console.log("Got user " + username + " password ha1:" + password.ha1);
       return done(null, username, password);
     });
   },
