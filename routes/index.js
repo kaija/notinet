@@ -101,7 +101,7 @@ passport.use(new DigestStrategy({ qop: 'auth' , realm: config.site.realm},
     // set the user to `false` to indicate failure.  Otherwise, return the
     // user and user's password.
     user.get(username, function(err, res){
-      if(err) return done(err);
+      if(err) return done(null, false);
       var password = {};
       password['ha1'] = res.password;
       return done(null, username, password);

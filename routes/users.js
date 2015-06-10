@@ -7,7 +7,7 @@ var user = db.user();
 var auth = require('./index');
 var config = require('../config');
 
-function respGen(res, code, err, msg)
+function respGen(res, code, errno, err, msg)
 {
   if(code == 0) {
     res.status(200);
@@ -18,6 +18,7 @@ function respGen(res, code, err, msg)
   }else{
     ret["error"] = "";
   }
+  ret["errno"] = errno;
   if(msg) {
     ret["result"] = msg;
   }else{
@@ -59,7 +60,18 @@ router.post('/create', function(req, res, next) {
     u['password'] =  ha1;
   }
   user.create(u, function(e, r){
-    respGen(res, 200, e, r);
+    var en = 0;
+    if(e) {
+      switch(e) {
+        case 'user already exist':
+          en = 1001;
+          break;
+        default:
+          en = 0;
+          break;
+      }
+    }
+    respGen(res, 200, en, e, r);
   });
 });
 
@@ -74,7 +86,7 @@ router.get('/profile/:id', function(req, res, next) {
     if(ret){
       delete ret['id'];
     }
-    respGen(res, 200, err, ret);
+    respGen(res, 200, 0, err, ret);
   });
 });
 
@@ -93,7 +105,7 @@ router.put('/update', function(req, res, next) {
   //u['fullName'] = 'ke';
   //u['email'] = 'kaija.chang.co@gmail.com';
   user.update(u, function(err, ret){
-    respGen(res, 200, err, ret);
+    respGen(res, 200, 0, err, ret);
   });
 });
 

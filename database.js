@@ -39,7 +39,7 @@ async.waterfall([
       return r.branch(
         containsTable,
         {created: 0},
-        r.tableCreate('groups', {primary_key: 'name'})
+        r.tableCreate('groups')
       );
     }).run(connection, function(err) {
       callback(err, connection);
