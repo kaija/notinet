@@ -3,7 +3,7 @@ var async = require('async');
 var r = require('rethinkdb');
 var dbConfig = require('./config.json').rethinkdb;
 var logger = require('winston');
-
+//TODO remove rethink db function, add create database / table from db/rethinkdb.js
 async.waterfall([
   //Connect to RethinkDB
   function connect(callback) {
@@ -27,7 +27,7 @@ async.waterfall([
       return r.branch(
         containsTable,
         {created: 0},
-        r.tableCreate('users')
+        r.tableCreate('users', {primary_key: 'email'})
       );
     }).run(connection, function(err) {
       callback(err, connection);

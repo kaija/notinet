@@ -36,8 +36,25 @@ var user = function(){
     /*
   */
   };
-  update = function(){
-    console.log('yo updated');
+  update = function(u, cb){
+    r.table(config.db.userTable).filter({'email':u.email}).run(dbConnection()).then(function(cursor) {
+      return cursor.toArray();
+    }).then(function(result) {
+      if(result.length > 0) {
+        var ori = result[0];
+        for (i in u) {
+          ori[i] = u[i];
+        }
+        r.table(config.db.userTable).replace(ori).run(dbConnection()).then(function(a, b){
+          if(a) console.log(a);
+          if(b) console.log(b);
+          cb(null, 'done');
+        });
+      }else{
+        //TODO user not exist, should not happend
+          cb('user not exist', null);
+      }
+    });
   };
   get = function(id, cb){
     r.table(config.db.userTable).filter({'email':id}).run(dbConnection()).then(function(cursor) {
@@ -81,5 +98,21 @@ var project = function(){
   return that;
 }
 
+var test = function() {
+  var _super = {};
+  var destroyDB;
+  var that = new events.EventEmitter();
+  that.setMaxListeners(0);
+
+  destroyDB = function(cb){
+    r.dbDrop.run(dbConnection(), function(err, data){
+      cb(err, data);
+    });
+  };
+  fwk.method(that, 'destroyDB', destroyDB, _super);
+  return that;
+}
+
 exports.user = user;
 exports.project = project;
+exports.test = test;

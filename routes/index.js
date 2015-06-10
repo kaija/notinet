@@ -6,6 +6,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var DigestStrategy = require('passport-http').DigestStrategy;
 
+var db = require('../db/rethinkdb');
+var user = db.user();
 var router = express.Router();
 var config = require('../config');
 
@@ -92,17 +94,18 @@ function ensureAuthenticated(req, res, next) {
 /*!
  * Local Digest strategy
  */
-passport.use(new DigestStrategy({ qop: 'auth' },
+passport.use(new DigestStrategy({ qop: 'auth' , realm: config.site.realm},
   function(username, done) {
-  console.log("find " + username);
     // Find the user by username.  If there is no user with the given username
     // set the user to `false` to indicate failure.  Otherwise, return the
     // user and user's password.
-    findByUsername(username, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      return done(null, user, user.password);
-    })
+    user.get(username, function(err, res){
+      if(err) return done(err);
+      var password = {};
+      password['ha1'] = res.password;
+      console.log("Got user " + username + " password ha1:" + password.ha1);
+      return done(null, username, password);
+    });
   },
   function(params, done) {
     // asynchronous validation, for effect...
@@ -182,6 +185,5 @@ router.get('/test', ensureAuthenticated, function(req, res, next) {
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
 
 module.exports = router;
