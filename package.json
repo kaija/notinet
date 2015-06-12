@@ -43,5 +43,10 @@
   "bugs": {
     "url": "https://github.com/kaija/notinet/issues"
   },
-  "homepage": "https://github.com/kaija/notinet"
+  "homepage": "https://github.com/kaija/notinet",
+  "devDependencies": {
+    "http-digest-client": "0.0.3",
+    "httpreq": "^0.4.12",
+    "should": "^6.0.3"
+  }
 }

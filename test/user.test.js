@@ -40,6 +40,31 @@ describe("User", function(){
         }
       );
     })
+  }),
+  describe("login", function(){
+    it("with correct password", function(done){
+      var digest = require('http-digest-client')('abc@gmail.com', 'test');
+      digest.request({
+        host: 'localhost',
+        path: '/login',
+        port: 3000,
+        method: 'POST',
+        headers: { "User-Agent": "Simon Ljungberg" } // Set any headers you want
+      }, function (res) {
+        res.on('data', function (data) {
+        });
+        res.on('end', function(){
+          res.statusCode.should.be.exactly(200);
+          should.exist(res.headers['set-cookie']);
+          var str = res.headers['set-cookie'][0];
+          var a = str.split(';');
+          session = a;
+          done();
+        });
+        res.on('error', function (err) {
+        });
+      });
 
-  });
+    })
+  })
 });
