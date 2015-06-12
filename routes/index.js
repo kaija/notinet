@@ -177,8 +177,8 @@ router.post('/login', passport.authenticate('digest', { session: true }),
   }
 );
 
-router.get('/test', ensureAuthenticated, function(req, res, next) {
-  res.send(req.user);
+router.get('/validate', ensureAuthenticated, function(req, res, next) {
+  res.send("OK");
 });
 
 /* GET home page. */
