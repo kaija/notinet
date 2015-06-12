@@ -102,7 +102,9 @@ describe("User", function(){
         res.on('error', function (err) {
         });
       });
-    }),
+    })
+  }),
+  describe("access", function(){
     it("with correct session", function(done){
       var c = [];
       httpreq.get('http://localhost:3000/validate',
@@ -117,6 +119,30 @@ describe("User", function(){
     it("with incorrect session", function(done){
       var c = [];
       httpreq.get('http://localhost:3000/validate',
+        {
+          cookies: ["test=test"]
+        },function(err, res){
+          res.statusCode.should.be.exactly(401);
+          done();
+        }
+      );
+    })
+  }),
+  describe("API get", function(){
+    it("with correct session", function(done){
+      var c = [];
+      httpreq.get('http://localhost:3000/users/get',
+        {
+          cookies: [session]
+        },function(err, res){
+          res.statusCode.should.be.exactly(200);
+          done();
+        }
+      );
+    }),
+    it("with incorrect session", function(done){
+      var c = [];
+      httpreq.get('http://localhost:3000/users/get',
         {
           cookies: ["test=test"]
         },function(err, res){

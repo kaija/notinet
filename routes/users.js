@@ -78,10 +78,8 @@ router.post('/create', function(req, res, next) {
 /**
  * Get user data
  */
-//router.get('/profile/:id', ensureAuthenticated, function(req, res, next) {
-router.get('/get', function(req, res, next) {
-  //TODO id should obtain from passport auth module
-  var email = req.user.email;
+router.get('/get', ensureAuthenticated, function(req, res, next) {
+  var email = req.user;
   user.get(email, function(err, ret){
     if(ret){
       delete ret['id'];
